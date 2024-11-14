@@ -70,4 +70,8 @@ public class Actividad2 extends AppCompatActivity {
         Intent ScreenCamera = new Intent(this, CameraActivity.class);
         startActivity(ScreenCamera);
     }
+    public void goToRegistrarLote(View v) {
+        Intent ScreenRegistrarLote = new Intent(this, RegistrarLoteActivity.class);
+        startActivity(ScreenRegistrarLote);
+    }
 }
