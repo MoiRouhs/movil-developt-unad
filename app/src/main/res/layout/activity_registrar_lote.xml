@@ -136,5 +136,6 @@
         android:ems="10"
         android:inputType="date"
         app:layout_constraintBottom_toTopOf="@+id/area_sembrada_label"
-        tools:layout_editor_absoluteX="31dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

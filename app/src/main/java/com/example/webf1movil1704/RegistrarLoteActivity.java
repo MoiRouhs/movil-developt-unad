@@ -1,7 +1,13 @@
 package com.example.webf1movil1704;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.database.sqlite.SQLiteDatabase;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -11,7 +17,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.webf1movil1704.DB.DbHelper;
+
 public class RegistrarLoteActivity extends AppCompatActivity {
+
+    private Button btnEnviar;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +34,69 @@ public class RegistrarLoteActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        /* Título */
         this.setTitle("Registrar Lote");
+
+        /* Back Button */
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        btnEnviar = findViewById(R.id.enviar_registro_lote);
+        /* Crear DB SQLite */
+        DbHelper dbHelper = new DbHelper(RegistrarLoteActivity.this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        if(db != null) {
+            Toast.makeText(RegistrarLoteActivity.this, "Base de datos creada", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(RegistrarLoteActivity.this, "Error al crear la base de datos", Toast.LENGTH_SHORT).show();
+        }
+
+        btnEnviar.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              EditText fechaSiembra;
+              EditText tipoCultivo;
+              EditText numeroArboles;
+              EditText areaSembrada;
+              EditText ubicacion;
+
+
+              fechaSiembra = (EditText)findViewById(R.id.editTextDate);
+              tipoCultivo = (EditText)findViewById(R.id.tipo_cultivo);
+              numeroArboles = (EditText)findViewById(R.id.numero_arboles);
+              areaSembrada = (EditText)findViewById(R.id.area_sembrada);
+              ubicacion = (EditText)findViewById(R.id.ubicacion);
+
+              // Crear un objeto ContentValues para insertar datos
+              ContentValues values = new ContentValues();
+              values.put("fecha_siembra", String.valueOf(fechaSiembra.getText()));
+              values.put("tipo_cultivo", String.valueOf(tipoCultivo.getText()));
+              values.put("numero_arboles", Integer.parseInt(String.valueOf(numeroArboles.getText())));
+              values.put("area_sembrada", Double.parseDouble(String.valueOf(areaSembrada.getText())));  // en hectáreas
+              values.put("ubicacion", String.valueOf(ubicacion.getText()));
+
+              // Insertar el registro en la base de datos
+              long newRowId = db.insert(DbHelper.TABLE_NAME, null, values);
+
+              // Verificar si se insertó correctamente
+              if (newRowId != -1) {
+                  // Registro insertado correctamente
+                  Toast.makeText(RegistrarLoteActivity.this, "Registro insertado correctamente. ID: " + newRowId, Toast.LENGTH_SHORT).show();
+                  System.out.println("Registro insertado correctamente. ID: " + newRowId);
+                  fechaSiembra.setText("");
+                  tipoCultivo.setText("");
+                  numeroArboles.setText("");
+                  areaSembrada.setText("");
+                  ubicacion.setText("");
+              } else {
+                  // Error al insertar el registro
+                  Toast.makeText(RegistrarLoteActivity.this, "Error al insertar el registro.", Toast.LENGTH_SHORT).show();
+                  System.out.println("Error al insertar el registro.");
+              }
+          }
+        });
+
     }
 
     @Override
