@@ -1,7 +1,9 @@
 package com.example.webf1movil1704;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.View;
@@ -68,6 +70,7 @@ public class RegistrarLoteActivity extends AppCompatActivity {
               areaSembrada = (EditText)findViewById(R.id.area_sembrada);
               ubicacion = (EditText)findViewById(R.id.ubicacion);
 
+
               // Crear un objeto ContentValues para insertar datos
               ContentValues values = new ContentValues();
               values.put("fecha_siembra", String.valueOf(fechaSiembra.getText()));
@@ -76,23 +79,28 @@ public class RegistrarLoteActivity extends AppCompatActivity {
               values.put("area_sembrada", Double.parseDouble(String.valueOf(areaSembrada.getText())));  // en hectáreas
               values.put("ubicacion", String.valueOf(ubicacion.getText()));
 
-              // Insertar el registro en la base de datos
-              long newRowId = db.insert(DbHelper.TABLE_NAME, null, values);
+              if(existed(values)) {
+                  // Insertar el registro en la base de datos
+                  long newRowId = db.insert(DbHelper.TABLE_NAME, null, values);
 
-              // Verificar si se insertó correctamente
-              if (newRowId != -1) {
-                  // Registro insertado correctamente
-                  Toast.makeText(RegistrarLoteActivity.this, "Registro insertado correctamente. ID: " + newRowId, Toast.LENGTH_SHORT).show();
-                  System.out.println("Registro insertado correctamente. ID: " + newRowId);
-                  fechaSiembra.setText("");
-                  tipoCultivo.setText("");
-                  numeroArboles.setText("");
-                  areaSembrada.setText("");
-                  ubicacion.setText("");
-              } else {
-                  // Error al insertar el registro
-                  Toast.makeText(RegistrarLoteActivity.this, "Error al insertar el registro.", Toast.LENGTH_SHORT).show();
-                  System.out.println("Error al insertar el registro.");
+                  // Verificar si se insertó correctamente
+                  if (newRowId != -1) {
+                      // Registro insertado correctamente
+                      Toast.makeText(RegistrarLoteActivity.this, "Registro insertado correctamente. ID: " + newRowId, Toast.LENGTH_SHORT).show();
+                      System.out.println("Registro insertado correctamente. ID: " + newRowId);
+                      fechaSiembra.setText("");
+                      tipoCultivo.setText("");
+                      numeroArboles.setText("");
+                      areaSembrada.setText("");
+                      ubicacion.setText("");
+                  } else {
+                      // Error al insertar el registro
+                      Toast.makeText(RegistrarLoteActivity.this, "Error al insertar el registro.", Toast.LENGTH_SHORT).show();
+                      System.out.println("Error al insertar el registro.");
+                  }
+              }else{
+                  Toast.makeText(RegistrarLoteActivity.this, "El registro ya existe", Toast.LENGTH_SHORT).show();
+
               }
           }
         });
@@ -107,6 +115,26 @@ public class RegistrarLoteActivity extends AppCompatActivity {
                 return true ;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean existed(Object obj) {
+        DbHelper dbHelper = new DbHelper(RegistrarLoteActivity.this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        String query = "SELECT 1 FROM lotes WHERE fecha_siembra = ? AND tipo_cultivo = ? AND numero_arboles = ? AND area_sembrada = ? AND ubicacion = ? LIMIT 1;";
+        Log.d("test", "Esto es un test");
+        Log.d("obj", ((ContentValues) obj).getAsString("fecha_siembra"));
+        Cursor cursor = db.rawQuery(query, new String[]{
+                ((ContentValues) obj).getAsString("fecha_siembra"),
+                ((ContentValues) obj).getAsString("tipo_cultivo"),
+                String.valueOf(((ContentValues) obj).getAsInteger("numero_arboles")),
+                String.valueOf(((ContentValues) obj).getAsDouble("area_sembrada")),
+                ((ContentValues) obj).getAsString("ubicacion")
+        });
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        Log.d("existed", String.valueOf(exists));
+        return !exists;
     }
 
 }
