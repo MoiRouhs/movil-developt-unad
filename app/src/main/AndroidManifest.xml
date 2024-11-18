@@ -18,6 +18,9 @@
         android:theme="@style/Theme.WebF1Movil1704"
         tools:targetApi="31">
         <activity
+            android:name=".Activity_ingreso_lotes"
+            android:exported="false" />
+        <activity
             android:name=".RegistrarLoteActivity"
             android:exported="false" />
         <activity
