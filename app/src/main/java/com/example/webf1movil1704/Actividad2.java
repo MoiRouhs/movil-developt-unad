@@ -61,6 +61,11 @@ public class Actividad2 extends AppCompatActivity {
         }
     }
 
+    public void ingreso_lotes(View v) {
+        Intent intento = new Intent(this, Activity_ingreso_lotes.class);
+        startActivity(intento);
+    }
+
     public void cerrarSesion(View v) {
         Intent intento = new Intent(this, MainActivity.class);
         startActivity(intento);

@@ -135,6 +135,8 @@ public class RegistrarLoteActivity extends AppCompatActivity {
         cursor.close();
         Log.d("existed", String.valueOf(exists));
         return !exists;
+
+
     }
 
 }
