@@ -79,4 +79,6 @@ public class Actividad2 extends AppCompatActivity {
         Intent ScreenRegistrarLote = new Intent(this, RegistrarLoteActivity.class);
         startActivity(ScreenRegistrarLote);
     }
+
+
 }

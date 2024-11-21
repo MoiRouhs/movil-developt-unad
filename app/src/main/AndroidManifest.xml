@@ -33,6 +33,8 @@
             android:name=".Actividad2"
             android:exported="false" />
         <activity
+            android:name=".ListarLotesActivity" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

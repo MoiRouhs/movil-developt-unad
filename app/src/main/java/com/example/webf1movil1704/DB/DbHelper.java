@@ -1,5 +1,6 @@
 package com.example.webf1movil1704.DB;
 
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
@@ -11,7 +12,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "db_lotes";
     public static final String TABLE_NAME = "lotes";
 
-    public DbHelper(@Nullable RegistrarLoteActivity context ){
+    public DbHelper(@Nullable Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

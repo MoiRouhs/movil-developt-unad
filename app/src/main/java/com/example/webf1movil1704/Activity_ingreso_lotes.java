@@ -22,4 +22,8 @@ public class Activity_ingreso_lotes extends AppCompatActivity {
         public void RegistrarLote (View v) {
             Intent intento=new Intent( this, RegistrarLoteActivity.class);
             startActivity(intento);    }
+
+        public void listarLotes(View v) {
+            Intent intento = new Intent(this, ListarLotesActivity.class);
+            startActivity(intento);     }
     }
