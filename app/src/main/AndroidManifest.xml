@@ -35,6 +35,10 @@
         <activity
             android:name=".ListarLotesActivity" />
         <activity
+            android:name=".DetalleLoteActivity" />
+        <activity
+            android:name=".EditarLotesActivity" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

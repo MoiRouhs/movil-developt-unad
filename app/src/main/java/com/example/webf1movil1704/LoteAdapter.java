@@ -1,8 +1,10 @@
 package com.example.webf1movil1704;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,6 +33,13 @@ public class LoteAdapter extends RecyclerView.Adapter<LoteAdapter.LoteViewHolder
         holder.textViewId.setText(String.valueOf(lote.getId()));
         holder.textViewUbicacion.setText(lote.getUbicacion());
         holder.textViewArea.setText(String.format("%.2f ha", lote.getAreaSembrada()));
+
+        // Configura el botón "Ver más" para abrir DetalleLoteActivity con el ID del lote
+        holder.buttonVerMas.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), DetalleLoteActivity.class);
+            intent.putExtra("id", lote.getId());
+            v.getContext().startActivity(intent);
+        });
     }
 
     @Override
@@ -41,12 +50,14 @@ public class LoteAdapter extends RecyclerView.Adapter<LoteAdapter.LoteViewHolder
     static class LoteViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewId, textViewUbicacion, textViewArea;
+        Button buttonVerMas;
 
         public LoteViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewId = itemView.findViewById(R.id.textViewId);
             textViewUbicacion = itemView.findViewById(R.id.textViewUbicacion);
             textViewArea = itemView.findViewById(R.id.textViewArea);
+            buttonVerMas = itemView.findViewById(R.id.buttonVerMas); // Enlaza el botón
         }
     }
 }

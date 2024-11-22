@@ -33,6 +33,7 @@ public class ListarLotesActivity extends AppCompatActivity {
         recyclerViewLotes.setAdapter(loteAdapter);
     }
 
+
     private void cargarDatos() {
         DbHelper dbHelper = new DbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
