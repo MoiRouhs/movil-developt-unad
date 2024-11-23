@@ -44,7 +44,7 @@ public class RegistrarLoteActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        btnEnviar = findViewById(R.id.enviar_registro_lote);
+        btnEnviar = findViewById(R.id.actualizar_registro_lote);
         /* Crear DB SQLite */
         DbHelper dbHelper = new DbHelper(RegistrarLoteActivity.this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();

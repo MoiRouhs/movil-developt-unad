@@ -24,6 +24,9 @@ public class ListarLotesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_lotes);
 
+        /* Título */
+        this.setTitle("Listar lotes");
+
         recyclerViewLotes = findViewById(R.id.recyclerViewLotes);
         loteList = new ArrayList<>();
 

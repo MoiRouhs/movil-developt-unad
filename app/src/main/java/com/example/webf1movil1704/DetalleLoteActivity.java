@@ -3,11 +3,14 @@ package com.example.webf1movil1704;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.webf1movil1704.DB.DbHelper;
@@ -15,12 +18,16 @@ import com.example.webf1movil1704.DB.DbHelper;
 public class DetalleLoteActivity extends AppCompatActivity {
 
     private Button btnEliminar;
+    private Button btnEditar;
     private TextView textViewDetalle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_lote);
+
+        /* Título */
+        this.setTitle("Detalles lote");
 
         textViewDetalle = findViewById(R.id.textViewDetalle);
 
@@ -40,6 +47,16 @@ public class DetalleLoteActivity extends AppCompatActivity {
             };
         });
 
+        btnEditar = findViewById(R.id.buttonEditar);
+        btnEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetalleLoteActivity.this, EditarLoteActivity.class);
+                intent.putExtra("id", loteId);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void cargarDetalleLote(int id) {
