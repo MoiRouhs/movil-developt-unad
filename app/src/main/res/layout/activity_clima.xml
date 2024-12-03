@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Texto que muestra la ciudad -->
+    <TextView
+        android:id="@+id/tvCiudad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ciudad: "
+        android:textSize="18sp" />
+
+    <!-- Texto que muestra la temperatura -->
+    <TextView
+        android:id="@+id/tvTemperatura"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temperatura: "
+        android:textSize="18sp" />
+
+    <!-- Texto que muestra las condiciones del clima -->
+    <TextView
+        android:id="@+id/tvCondiciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Condiciones: "
+        android:textSize="18sp" />
+
+    <!-- Texto que muestra la temperatura máxima -->
+    <TextView
+        android:id="@+id/tvTempMax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp. Máxima: "
+        android:textSize="18sp" />
+
+    <!-- Texto que muestra la temperatura mínima -->
+    <TextView
+        android:id="@+id/tvTempMin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp. Mínima: "
+        android:textSize="18sp" />
+
+    <!-- Texto que muestra la humedad -->
+    <TextView
+        android:id="@+id/tvHumedad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Humedad: "
+        android:textSize="18sp" />
+
+    <!-- Texto que muestra la presión -->
+    <TextView
+        android:id="@+id/tvPresion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Presión: "
+        android:textSize="18sp" />
+
+    <!-- Texto que muestra la velocidad del viento -->
+    <TextView
+        android:id="@+id/tvVelocidadViento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Viento: "
+        android:textSize="18sp" />
+
+    <!-- Botón de Volver al menú anterior -->
+    <Button
+        android:id="@+id/btnVolver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Volver"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"
+        android:onClick="volver" />
+</LinearLayout>
