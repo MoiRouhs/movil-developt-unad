@@ -26,21 +26,28 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.io.FileOutputStream;
 import java.util.Date;
+import android.widget.EditText;
 
 public class CameraActivity extends AppCompatActivity {
     ImageView iv1;
+    EditText editTextDescription;  // Campo para la descripción
+    final int CAPTURE_IMAGE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_camera);
-        iv1=findViewById(R.id.iv1);
+
+        iv1 = findViewById(R.id.iv1);
+        editTextDescription = findViewById(R.id.editTextDescription);  // Inicializar el EditText
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
         this.setTitle("Camera");
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -49,44 +56,57 @@ public class CameraActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
-                return true ;
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
-    final int CAPTURE_IMAGE = 1;
 
-    public void takePhoto(View v){
-        Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    public void takePhoto(View v) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, CAPTURE_IMAGE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==CAPTURE_IMAGE && resultCode==RESULT_OK){
-            Bundle extras=data.getExtras();
-            Bitmap bitmap1=(Bitmap) extras.get("data");
+        if (requestCode == CAPTURE_IMAGE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap bitmap1 = (Bitmap) extras.get("data");
             iv1.setImageBitmap(bitmap1);
+
+            String description = editTextDescription.getText().toString();  // Obtener la descripción
+
             try {
                 FileOutputStream fos = openFileOutput(createNameJpg(), Context.MODE_PRIVATE);
                 bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
                 fos.close();
-            } catch(Exception e){
 
+                // Guardar la descripción en un archivo de texto
+                FileOutputStream descFos = openFileOutput(createDescriptionFileName(), Context.MODE_PRIVATE);
+                descFos.write(description.getBytes());
+                descFos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private String createNameJpg() {
-        String date= new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         return "IMG_" + date + ".jpg";
     }
-    public void verTodo(View v){
-        Intent intent=new Intent(this, CgalleryActivity.class);
+
+    private String createDescriptionFileName() {
+        String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return "IMG_" + date + "_desc.txt";
+    }
+
+    public void verTodo(View v) {
+        Intent intent = new Intent(this, CgalleryActivity.class);
         startActivity(intent);
     }
 }
