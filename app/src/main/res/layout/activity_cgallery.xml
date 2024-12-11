@@ -7,31 +7,37 @@
     tools:context=".CgalleryActivity">
 
     <!-- Campo para ingresar la fecha -->
+
+    <!-- Botón para aplicar el filtro -->
+
+    <!-- RecyclerView para mostrar las fotos -->
     <EditText
         android:id="@+id/etFilterDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Seleccione una fecha"
-        android:focusable="false"
         android:layout_margin="8dp"
+        android:layout_marginTop="104dp"
         android:background="@android:drawable/edit_text"
         android:drawableEnd="@android:drawable/ic_menu_my_calendar"
-        app:layout_constraintStart_toStartOf="parent"
+        android:focusable="false"
+        android:hint="Seleccione una fecha"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Botón para aplicar el filtro -->
     <Button
         android:id="@+id/btnApplyFilter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginTop="32dp"
         android:text="Filtrar"
-        app:layout_constraintTop_toBottomOf="@id/etFilterDate"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="8dp" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etFilterDate" />
 
-    <!-- RecyclerView para mostrar las fotos -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv1"
         android:layout_width="0dp"
@@ -39,9 +45,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintTop_toBottomOf="@id/btnApplyFilter"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnApplyFilter"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

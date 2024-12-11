@@ -165,27 +165,44 @@ public class CgalleryActivity extends AppCompatActivity {
             }
 
             public void imprimir(int position) {
-                tv1.setText("Nombre foto: " + archivos[position]);
-                Log.d("CgalleryActivity", "Archivo nombre: " + archivos[position]);
+                String fileName = archivos[position];
+                tv1.setText("Nombre archivo: " + fileName);
 
                 try {
-                    // Cargar la imagen
-                    FileInputStream fileInputStream = openFileInput(archivos[position]);
-                    Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
-                    iv1.setImageBitmap(bitmap);
-                    fileInputStream.close();
+                    // Leer todo el contenido del archivo
+                    FileInputStream fis = openFileInput(fileName);
+                    byte[] fileData = fis.readAllBytes();
+                    fis.close();
+
+                    // Buscar el delimitador
+                    String fileContent = new String(fileData);
+                    int delimiterIndex = fileContent.indexOf("\n---DESCRIPTION---\n");
+
+                    if (delimiterIndex != -1) {
+                        // Extraer la imagen
+                        byte[] imageBytes = Arrays.copyOfRange(fileData, 0, delimiterIndex);
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                        iv1.setImageBitmap(bitmap);
+
+                        // Extraer la descripción
+                        String description = fileContent.substring(delimiterIndex + "---DESCRIPTION---".length() + 2);
+                        tv1.setText("Nombre archivo: " + fileName + "\nDescripción: " + description);
+                    } else {
+                        tv1.setText("Nombre archivo: " + fileName + "\n(No se encontró descripción)");
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.e("CgalleryActivity", "Error loading image: " + e.getMessage());
+                    Log.e("CgalleryActivity", "Error reading file: " + e.getMessage());
                 }
             }
+
         }
 
         private void abrirImagenDetalle(int position) {
             String imageName = archivos[position];
 
             Intent intent = new Intent(CgalleryActivity.this, ImageDetailActivity.class);
-            intent.putExtra("imageName", imageName);
+            intent.putExtra("imageName", imageName); // Pasa el nombre del archivo
             startActivity(intent);
         }
 

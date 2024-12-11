@@ -80,16 +80,17 @@ public class CameraActivity extends AppCompatActivity {
             String description = editTextDescription.getText().toString();  // Obtener la descripción
 
             try {
+                // Nombre del archivo combinado
                 String fileName = createNameFile();
                 FileOutputStream fos = openFileOutput(fileName, Context.MODE_PRIVATE);
 
-                // Guardar la imagen en formato binario
+                // Guardar imagen en binario
                 bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 
-                // Escribir un delimitador para separar la imagen y la descripción
+                // Escribir un delimitador único
                 fos.write("\n---DESCRIPTION---\n".getBytes());
 
-                // Guardar la descripción como texto
+                // Guardar la descripción
                 fos.write(description.getBytes());
                 fos.close();
 
@@ -100,6 +101,7 @@ public class CameraActivity extends AppCompatActivity {
             }
         }
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private String createNameFile() {

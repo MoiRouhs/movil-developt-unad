@@ -44,6 +44,7 @@
             android:name=".EditarLoteActivity" />
         <activity
             android:name=".ClimaActivity" />
+        <activity android:name=".ImageDetailActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

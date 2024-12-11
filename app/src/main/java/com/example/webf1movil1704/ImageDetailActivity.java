@@ -1,69 +1,92 @@
 package com.example.webf1movil1704;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Base64;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.FileInputStream;
+import java.util.Arrays;
 
 public class ImageDetailActivity extends AppCompatActivity {
-
-    private ImageView ivDetailImage;
-    private TextView tvDetailDescription;
-    private Button btnDeleteImage;
+    ImageView ivImageDetail;
+    TextView tvDescriptionDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_detail);
 
-        ivDetailImage = findViewById(R.id.ivDetailImage);
-        tvDetailDescription = findViewById(R.id.tvDetailDescription);
-        btnDeleteImage = findViewById(R.id.btnDeleteImage);
+        ImageView ivImageDetail = findViewById(R.id.ivImageDetail);
+        TextView tvDescriptionDetail = findViewById(R.id.tvDescriptionDetail);
 
-        // Obtener el nombre del archivo desde el Intent
-        String fileName = getIntent().getStringExtra("fileName");
+        String imageName = getIntent().getStringExtra("imageName");
 
-        // Leer el archivo de texto combinado
         try {
-            FileInputStream fileInputStream = openFileInput(fileName);
-            byte[] fileContent = new byte[fileInputStream.available()];
-            fileInputStream.read(fileContent);
-            fileInputStream.close();
+            // Leer el archivo completo
+            FileInputStream fis = openFileInput(imageName);
+            byte[] fileBytes = new byte[fis.available()];
+            fis.read(fileBytes);
+            fis.close();
 
-            // Convertir el contenido del archivo en un String
-            String content = new String(fileContent);
+            // Convertir el archivo a String para buscar el delimitador
+            String fileContent = new String(fileBytes);
+            String delimiter = "\n---DESCRIPTION---\n";
 
-            // Extraer la imagen (Base64) y la descripción
-            String[] parts = content.split("\n\nDescription:");
-            String encodedImage = parts[0].replace("ImageBase64:", "").trim();
-            String description = parts.length > 1 ? parts[1].trim() : "";
+            // Separar la imagen y la descripción
+            int delimiterIndex = fileContent.indexOf(delimiter);
+            if (delimiterIndex != -1) {
+                // Obtener la parte binaria de la imagen
+                byte[] imageBytes = Arrays.copyOfRange(fileBytes, 0, delimiterIndex);
 
-            // Decodificar la imagen de Base64
-            byte[] decodedBytes = Base64.decode(encodedImage, Base64.DEFAULT);
-            Bitmap decodedImage = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-            ivDetailImage.setImageBitmap(decodedImage);
+                // Obtener la descripción como texto
+                String description = fileContent.substring(delimiterIndex + delimiter.length());
 
-            // Mostrar la descripción
-            tvDetailDescription.setText(description);
+                // Mostrar la imagen
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                ivImageDetail.setImageBitmap(bitmap);
 
+                // Mostrar la descripción
+                tvDescriptionDetail.setText(description);
+            } else {
+                tvDescriptionDetail.setText("Error: No se pudo leer la descripción.");
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Error al cargar la imagen y descripción", Toast.LENGTH_SHORT).show();
+            tvDescriptionDetail.setText("Error al cargar los datos.");
         }
+    }
 
-        // Eliminar la imagen
-        btnDeleteImage.setOnClickListener(v -> {
-            deleteFile(fileName);
-            Toast.makeText(this, "Imagen eliminada", Toast.LENGTH_SHORT).show();
-            finish();
-        });
+    private void loadImageAndDescription(String fileName) {
+        try {
+            // Leer todo el contenido del archivo
+            FileInputStream fis = openFileInput(fileName);
+            byte[] fileData = fis.readAllBytes();
+            fis.close();
+
+            // Buscar el delimitador para separar la imagen y la descripción
+            String delimiter = "\n---DESCRIPTION---\n";
+            int delimiterIndex = new String(fileData).indexOf(delimiter);
+
+            if (delimiterIndex != -1) {
+                // Extraer la imagen
+                byte[] imageBytes = Arrays.copyOfRange(fileData, 0, delimiterIndex);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                ivImageDetail.setImageBitmap(bitmap);
+
+                // Extraer la descripción
+                String description = new String(fileData, delimiterIndex + delimiter.length(), fileData.length - delimiterIndex - delimiter.length());
+                tvDescriptionDetail.setText(description);
+            } else {
+                tvDescriptionDetail.setText("No se encontró descripción.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            tvDescriptionDetail.setText("Error al cargar el archivo.");
+        }
     }
 }
