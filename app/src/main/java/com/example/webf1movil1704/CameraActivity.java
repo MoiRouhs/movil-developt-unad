@@ -80,14 +80,21 @@ public class CameraActivity extends AppCompatActivity {
             String description = editTextDescription.getText().toString();  // Obtener la descripción
 
             try {
-                FileOutputStream fos = openFileOutput(createNameJpg(), Context.MODE_PRIVATE);
+                String fileName = createNameFile();
+                FileOutputStream fos = openFileOutput(fileName, Context.MODE_PRIVATE);
+
+                // Guardar la imagen en formato binario
                 bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+
+                // Escribir un delimitador para separar la imagen y la descripción
+                fos.write("\n---DESCRIPTION---\n".getBytes());
+
+                // Guardar la descripción como texto
+                fos.write(description.getBytes());
                 fos.close();
 
-                // Guardar la descripción en un archivo de texto
-                FileOutputStream descFos = openFileOutput(createDescriptionFileName(), Context.MODE_PRIVATE);
-                descFos.write(description.getBytes());
-                descFos.close();
+                // Limpiar el cuadro de texto
+                editTextDescription.setText("");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -95,9 +102,9 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private String createNameJpg() {
+    private String createNameFile() {
         String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        return "IMG_" + date + ".jpg";
+        return "IMG_" + date + ".data";
     }
 
     private String createDescriptionFileName() {
